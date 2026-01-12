@@ -10,7 +10,7 @@
 
 #define LED_PIN 4
 
-const char *server_api = "https://sieuthitiendung.com/api/register";
+const char *server_api = "https://rubicon.sieuthitiendung.com/api/register";
 // const char *server_api = "http://192.168.100.217:3000/api/register";
 
 String mqtt_host = "";
@@ -26,7 +26,6 @@ unsigned long lastHeartbeat = 0;
 const long heartbeatInterval = 120000; // 2 phút (2000ms * 60 * 2)
 
 volatile bool ledRunning = false;
-unsigned long lastToggle = 0;
 unsigned long startTime = 0;
 unsigned long durationMs = 0;
 
@@ -132,7 +131,7 @@ void callback(char *topic, byte *payload, unsigned int length)
 		int duration = doc["duration"];
 		durationMs = duration * 1000;
 		startTime = millis();
-		lastToggle = millis();
+		digitalWrite(LED_PIN, HIGH);
 	}
 	else if (strcmp(action, "OFF") == 0)
 	{
@@ -219,12 +218,6 @@ void loop()
 
 		if (ledRunning)
 		{
-			if (millis() - lastToggle >= 1000)
-			{
-				lastToggle = millis();
-				digitalWrite(LED_PIN, HIGH);
-			}
-
 			if (durationMs > 0 && millis() - startTime >= durationMs)
 			{
 				ledRunning = false;
