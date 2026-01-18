@@ -128,7 +128,7 @@ void callback(char *topic, byte *payload, unsigned int length)
 	{
 		Serial.println("action: ON");
 		ledRunning = true;
-		int duration = doc["duration"];
+		float duration = doc["duration"];
 		durationMs = duration * 1000;
 		startTime = millis();
 		digitalWrite(LED_PIN, HIGH);
